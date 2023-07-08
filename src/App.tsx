@@ -1,6 +1,7 @@
 import {
   ColorScheme,
   ColorSchemeProvider,
+  Header,
   MantineProvider,
 } from "@mantine/core";
 import ColorThemeButton from "./components/ColorThemeButton";
@@ -21,17 +22,14 @@ export default function App() {
       toggleColorScheme={toggleColorScheme}
     >
       <MantineProvider
-        theme={{
-          colorScheme,
-          colors: {
-            lightYellow: ["#FFEC99"],
-          },
-        }}
+        theme={{ colorScheme }}
         withGlobalStyles
         withNormalizeCSS
       >
-        Mantine
-        <ColorThemeButton />
+        <Header height={60}>
+          Moje wydatki 
+          <ColorThemeButton />
+        </Header>
       </MantineProvider>
     </ColorSchemeProvider>
   );
