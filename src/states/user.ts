@@ -12,14 +12,14 @@ const useStore = create<User>((set) => ({
   setUsername: (username) =>
     set((state) => ({
       ...state,
-      username
+      username,
     })),
 
   totalAmount: "",
   setTotalAmount: (totalAmount) =>
     set((state) => ({
       ...state,
-      totalAmount
+      totalAmount,
     })),
 }));
 

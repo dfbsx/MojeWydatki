@@ -15,6 +15,7 @@ import { IconPigMoney } from "@tabler/icons-react";
 import styled, { keyframes } from "styled-components";
 import StartPage from "./views/StartPage";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import AccountPage from "./views/AccountPage";
 
 const pulseAnimation = keyframes`
   0% {
@@ -76,6 +77,7 @@ export default function App() {
           <Routes>
             <Route path="/">
               <Route index element={<StartPage />} />
+              <Route path="home" element={<AccountPage />} />
             </Route>
           </Routes>
         </BrowserRouter>

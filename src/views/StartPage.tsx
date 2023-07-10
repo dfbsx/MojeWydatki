@@ -7,10 +7,12 @@ import {
   createStyles,
   rem,
   Text,
+  Alert,
 } from "@mantine/core";
 import { useColorScheme, useHotkeys } from "@mantine/hooks";
 import { useState } from "react";
 import useStore from "../states/user";
+import { IconAlertCircle } from "@tabler/icons-react";
 
 export default function StartPage() {
   const useStyles = createStyles((theme) => ({
@@ -48,18 +50,18 @@ export default function StartPage() {
 
   const { classes } = useStyles();
   const preferredColorScheme = useColorScheme();
+  const { setUsername, setTotalAmount, username, totalAmount } = useStore();
+
   const [colorScheme, setColorScheme] =
     useState<ColorScheme>(preferredColorScheme);
 
   const toggleColorScheme = (value?: ColorScheme) =>
     setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
+    console.log(username)
 
   useHotkeys([["mod+J", () => toggleColorScheme()]]);
 
-  const {setUsername, setTotalAmount, username, totalAmount} = useStore();
-
-  const goToAccountPage = ()=>{console.log("konsola");console.log(username); console.log(totalAmount)}
-
+  
   return (
     <div className={classes.wrapper}>
       <Paper className={classes.form} radius={0} p={30}>
@@ -72,25 +74,45 @@ export default function StartPage() {
         >
           Zacznij śledzić swój stan konta!
         </Title>
-        <TextInput label="Jak masz na imię?" placeholder="Ania" size="md" onChange={(e) => setUsername(e.target.value)} />
-        <TextInput
-          label="Od jakiej kwoty zaczynamy śledzenie?"
-          placeholder="500"
-          onChange={(e) => setTotalAmount(e.target.value)}
-          mt="md"
-          size="md"
-        />
-        <Button
-          fullWidth
-          mt="xl"
-          size="md"
-          variant="gradient"
-          gradient={{ from: "teal", to: "lime", deg: 105 }}
-          radius="xl"
-          onClick={goToAccountPage}
-        >
-          Zaczynamy
-        </Button>
+        <form>
+          <TextInput
+            label="Jak masz na imię?"
+            placeholder="Ania"
+            size="md"
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <TextInput
+            label="Od jakiej kwoty zaczynamy śledzenie?"
+            placeholder="500"
+            onChange={(e) => setTotalAmount(e.target.value)}
+            mt="md"
+            size="md"
+          />
+          {username !== "" && totalAmount !== "" ? (
+            <Button
+              component="a"
+              href="/home"
+              fullWidth
+              mt="xl"
+              size="md"
+              variant="gradient"
+              gradient={{ from: "teal", to: "lime", deg: 105 }}
+              radius="xl"
+              type="submit"
+            >
+              Zaczynamy
+            </Button>
+          ) : (
+            <Alert
+              icon={<IconAlertCircle size="1rem" />}
+              mt="md"
+              title="Aby przejść dalej,"
+              color="green"
+            >
+              podaj imię i kwotę.
+            </Alert>
+          )}
+        </form>
         <Text fz="xs" ta="center" mt="md" mb={50} c="dimmed">
           Twoje dane będą dostępne tylko dla Ciebie na Twoim komputerze
         </Text>
