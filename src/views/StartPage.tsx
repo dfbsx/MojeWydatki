@@ -10,6 +10,7 @@ import {
 } from "@mantine/core";
 import { useColorScheme, useHotkeys } from "@mantine/hooks";
 import { useState } from "react";
+import useStore from "../states/user";
 
 export default function StartPage() {
   const useStyles = createStyles((theme) => ({
@@ -55,6 +56,10 @@ export default function StartPage() {
 
   useHotkeys([["mod+J", () => toggleColorScheme()]]);
 
+  const {setUsername, setTotalAmount, username, totalAmount} = useStore();
+
+  const goToAccountPage = ()=>{console.log("konsola");console.log(username); console.log(totalAmount)}
+
   return (
     <div className={classes.wrapper}>
       <Paper className={classes.form} radius={0} p={30}>
@@ -67,10 +72,11 @@ export default function StartPage() {
         >
           Zacznij śledzić swój stan konta!
         </Title>
-        <TextInput label="Jak masz na imię?" placeholder="Ania" size="md" />
+        <TextInput label="Jak masz na imię?" placeholder="Ania" size="md" onChange={(e) => setUsername(e.target.value)} />
         <TextInput
           label="Od jakiej kwoty zaczynamy śledzenie?"
           placeholder="500"
+          onChange={(e) => setTotalAmount(e.target.value)}
           mt="md"
           size="md"
         />
@@ -81,6 +87,7 @@ export default function StartPage() {
           variant="gradient"
           gradient={{ from: "teal", to: "lime", deg: 105 }}
           radius="xl"
+          onClick={goToAccountPage}
         >
           Zaczynamy
         </Button>
