@@ -9,10 +9,12 @@ import {
   Text,
   Alert,
 } from "@mantine/core";
-import { useColorScheme, useHotkeys } from "@mantine/hooks";
+import { useColorScheme, useHotkeys, useToggle } from "@mantine/hooks";
 import { useState } from "react";
 import useStore from "../states/user";
 import { IconAlertCircle } from "@tabler/icons-react";
+import { useForm } from '@mantine/form';
+
 
 export default function StartPage() {
   const useStyles = createStyles((theme) => ({
@@ -50,17 +52,17 @@ export default function StartPage() {
 
   const { classes } = useStyles();
   const preferredColorScheme = useColorScheme();
-  const { setUsername, setTotalAmount, username, totalAmount } = useStore();
+  const { setUsername, setTotalAmount } = useStore();
 
   const [colorScheme, setColorScheme] =
     useState<ColorScheme>(preferredColorScheme);
 
   const toggleColorScheme = (value?: ColorScheme) =>
     setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
-    console.log(username)
 
   useHotkeys([["mod+J", () => toggleColorScheme()]]);
 
+  const form = useForm({ initialValues: { username: '', totalAmount: '' } });
   
   return (
     <div className={classes.wrapper}>
@@ -74,24 +76,24 @@ export default function StartPage() {
         >
           Zacznij śledzić swój stan konta!
         </Title>
-        <form>
+        <form onSubmit={form.onSubmit(() => console.log("konsola"))}>
           <TextInput
             label="Jak masz na imię?"
             placeholder="Ania"
             size="md"
-            onChange={(e) => setUsername(e.target.value)}
+            {...form.getInputProps('username')}
           />
           <TextInput
             label="Od jakiej kwoty zaczynamy śledzenie?"
             placeholder="500"
-            onChange={(e) => setTotalAmount(e.target.value)}
+            {...form.getInputProps('totalAmount')}
             mt="md"
             size="md"
           />
-          {username !== "" && totalAmount !== "" ? (
+          {form.values.username !== "" && form.values.totalAmount !== "" ? (
             <Button
               component="a"
-              href="/home"
+             
               fullWidth
               mt="xl"
               size="md"
