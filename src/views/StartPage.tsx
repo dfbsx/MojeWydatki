@@ -9,12 +9,10 @@ import {
   Text,
   Alert,
 } from "@mantine/core";
-import { useColorScheme, useHotkeys, useToggle } from "@mantine/hooks";
-import { useState } from "react";
 import useStore from "../states/user";
 import { IconAlertCircle } from "@tabler/icons-react";
-import { useForm } from '@mantine/form';
-
+import { useForm } from "@mantine/form";
+import { useNavigate } from "react-router-dom";
 
 export default function StartPage() {
   const useStyles = createStyles((theme) => ({
@@ -51,19 +49,10 @@ export default function StartPage() {
   }));
 
   const { classes } = useStyles();
-  const preferredColorScheme = useColorScheme();
   const { setUsername, setTotalAmount } = useStore();
+  const form = useForm({ initialValues: { username: "", totalAmount: "" } });
+  const navigate = useNavigate();
 
-  const [colorScheme, setColorScheme] =
-    useState<ColorScheme>(preferredColorScheme);
-
-  const toggleColorScheme = (value?: ColorScheme) =>
-    setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
-
-  useHotkeys([["mod+J", () => toggleColorScheme()]]);
-
-  const form = useForm({ initialValues: { username: '', totalAmount: '' } });
-  
   return (
     <div className={classes.wrapper}>
       <Paper className={classes.form} radius={0} p={30}>
@@ -76,24 +65,28 @@ export default function StartPage() {
         >
           Zacznij śledzić swój stan konta!
         </Title>
-        <form onSubmit={form.onSubmit(() => console.log("konsola"))}>
+        <form
+          onSubmit={form.onSubmit(() => {
+            navigate("/home");
+            setUsername(form.values.username);
+            setTotalAmount(parseInt(form.values.totalAmount));
+          })}
+        >
           <TextInput
             label="Jak masz na imię?"
             placeholder="Ania"
             size="md"
-            {...form.getInputProps('username')}
+            {...form.getInputProps("username")}
           />
           <TextInput
             label="Od jakiej kwoty zaczynamy śledzenie?"
             placeholder="500"
-            {...form.getInputProps('totalAmount')}
+            {...form.getInputProps("totalAmount")}
             mt="md"
             size="md"
           />
-          {form.values.username !== "" && form.values.totalAmount !== "" ? (
+          {form.values.username !== "" && form.values.totalAmount !==  "" ? (
             <Button
-              component="a"
-             
               fullWidth
               mt="xl"
               size="md"

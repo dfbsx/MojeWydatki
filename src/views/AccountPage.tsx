@@ -1,13 +1,36 @@
-import useStore from "../states/user"
+import { AppShell, Badge, Button, Card, Divider, Flex, Group, Modal, Title, createStyles, rem, Text, Image } from "@mantine/core";
+import useStore from "../states/user";
+import { useDisclosure } from "@mantine/hooks";
+import MoneyCard from "../components/MoneyCard";
 function AccountPage() {
-
-    const username = useStore((state) => state.username);
-    const totalAmount = useStore((state) => state.totalAmount);
+  const useStyles = createStyles((theme) => ({
+    page: {
+      padding: `${rem(20)} ${rem(24)}`,
+    },
+  }));
+  const { classes } = useStyles();
+  const username = useStore((state) => state.username);
+  const totalAmount = useStore((state) => state.totalAmount);
+  const [wplyw, { open, close }] = useDisclosure(false);
+  
   return (
-    <div>Użytkownik {username}
-stan konta {totalAmount}
-    </div>
-  )
+    <div className={classes.page}>
+    <Modal opened={wplyw} onClose={close} title="Dodaj nowy wpływ/wydatek">
+  </Modal>
+      <Flex  align="center"
+      direction="row"
+      justify="space-between">
+      <Title order={3} weight={500}>
+        Witaj, {username}!
+      </Title>
+      <Button variant="light" color="blue" radius="xl" onClick={open}>Dodaj nowy wpływ/wydatek</Button>
+      </Flex>
+      <Flex justify="space-evenly" mt="xl">
+      <MoneyCard sum={totalAmount}></MoneyCard>
+      
+      </Flex>
+            </div>
+  );
 }
 
-export default AccountPage
+export default AccountPage;

@@ -3,8 +3,8 @@ import create from "zustand";
 interface User {
   username: string;
   setUsername: (username: string) => void;
-  totalAmount: string;
-  setTotalAmount: (totalAmount: string) => void;
+  totalAmount: number;
+  setTotalAmount: (totalAmount: number) => void;
 }
 
 const useStore = create<User>((set) => ({
@@ -15,7 +15,7 @@ const useStore = create<User>((set) => ({
       username,
     })),
 
-  totalAmount: "",
+  totalAmount: 0,
   setTotalAmount: (totalAmount) =>
     set((state) => ({
       ...state,
