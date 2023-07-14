@@ -31,17 +31,19 @@ function AccountPage() {
   });
 
   useEffect(() => {
-    const storedData = JSON.parse(localStorage.getItem("mojeWydatki") || "{}");
-    storedData.totalAmount = totalAmount;
-    localStorage.setItem("mojeWydatki", JSON.stringify(storedData));
-    console.log("Dane", storedData);
-  }, [totalAmount]);
-
+    const storedUser = localStorage.getItem("mojeWydatki");
+    if (storedUser) {
+      setData(JSON.parse(storedUser));
+    } else {
+      localStorage.setItem("mojeWydatki", JSON.stringify(newUser));
+      setData(newUser);
+    }
+  },[totalAmount]);
   const [opened, { open, close }] = useDisclosure(false);
 
   return (
     <div className={classes.page}>
-      <ChangeAmoutModal opened={opened} close={close} />
+      <ChangeAmoutModal opened={opened} close={close}/>
       <Flex align="center" direction="row" justify="space-between" mb="md">
         <Title order={3} weight={500}>
           Witaj, {data?.username}!
@@ -51,7 +53,7 @@ function AccountPage() {
         </Button>
       </Flex>
       <Flex justify="space-evenly" mt="xl">
-        <MoneyCard sum={totalAmount}></MoneyCard>
+        <MoneyCard sum={data.totalAmount}></MoneyCard>
       </Flex>
     </div>
   );

@@ -1,5 +1,5 @@
 import { Checkbox, Modal, Flex, Button, TextInput } from "@mantine/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useStore from "../states/user";
 import { useInputState } from "@mantine/hooks";
 
@@ -14,6 +14,7 @@ function ChangeAmoutModal({
   const [value, setValue] = useState<string[]>([]);
   const totalAmount = useStore((state) => state.totalAmount);
   const { increase, subtract } = useStore();
+  const [data, setData] = useState({});
   const [newAmountObject,setNewAmountObject] = useState({
     title:"",
     date:"",
@@ -27,6 +28,9 @@ function ChangeAmoutModal({
     }
     close();
   };
+  
+
+
   return (
     <Modal
       opened={opened}
