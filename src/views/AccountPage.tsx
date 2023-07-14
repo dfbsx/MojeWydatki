@@ -16,25 +16,26 @@ function AccountPage() {
   const totalAmount = useStore((state) => state.totalAmount);
   const [data, setData] = useState<Partial<User>>({});
 
-interface User {
-  username: string;
-  totalAmount: number | string;
-  allProceeds: any[];
-  allExpenses: any[];
-}
+  interface User {
+    username: string;
+    totalAmount: number | string;
+    allProceeds: any[];
+    allExpenses: any[];
+  }
 
-const [newUser, setNewUser] = useState<User>({
-  username: `${username}`,
-  totalAmount: `${totalAmount}`,
-  allProceeds: [],
-  allExpenses: [],
-});
+  const [newUser, setNewUser] = useState<User>({
+    username: `${username}`,
+    totalAmount: `${totalAmount}`,
+    allProceeds: [],
+    allExpenses: [],
+  });
 
-useEffect(() => {
-  const storedData = JSON.parse(window.localStorage.getItem("mojeWydatki") || "{}");
-  setData(storedData);
-  console.log("Dane", storedData);
-}, []);
+  useEffect(() => {
+    const storedData = JSON.parse(localStorage.getItem("mojeWydatki") || "{}");
+    storedData.totalAmount = totalAmount;
+    localStorage.setItem("mojeWydatki", JSON.stringify(storedData));
+    console.log("Dane", storedData);
+  }, [totalAmount]);
 
   const [opened, { open, close }] = useDisclosure(false);
 
@@ -52,7 +53,6 @@ useEffect(() => {
       <Flex justify="space-evenly" mt="xl">
         <MoneyCard sum={totalAmount}></MoneyCard>
       </Flex>
-      <Button onClick={() => console.log(newUser)}>ok</Button>
     </div>
   );
 }

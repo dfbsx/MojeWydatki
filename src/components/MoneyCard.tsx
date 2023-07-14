@@ -1,7 +1,7 @@
 import { Card, Text, Title } from '@mantine/core'
 import React from 'react'
 
-function MoneyCard({sum}: {sum:number}) {
+function MoneyCard({sum}: {sum:number | string | undefined}) {
     
   return (
     <Card shadow="sm"  radius="md" withBorder pr="xl" pl="xl">

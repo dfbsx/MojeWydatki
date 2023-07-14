@@ -14,14 +14,18 @@ function ChangeAmoutModal({
   const [value, setValue] = useState<string[]>([]);
   const totalAmount = useStore((state) => state.totalAmount);
   const { increase, subtract } = useStore();
+  const [newAmountObject,setNewAmountObject] = useState({
+    title:"",
+    date:"",
+    amount:"",
+  });
   const updateTotalAmount = () => {
     if (value[0] === "add") {
       increase(newAmountValue);
-      close();
     } else {
       subtract(newAmountValue);
-      close();
     }
+    close();
   };
   return (
     <Modal
@@ -46,6 +50,13 @@ function ChangeAmoutModal({
           />
         </Flex>
       </Checkbox.Group>
+      <TextInput
+        mt="lg"
+        label="Podaj nazwę"
+        placeholder="Zakupy w Biedronce"
+        size="sm"
+        withAsterisk
+      />
       <TextInput
         mt="lg"
         label="Podaj kwotę"
