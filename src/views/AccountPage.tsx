@@ -8,7 +8,6 @@ import {
 import useStore from "../states/user";
 import { useDisclosure } from "@mantine/hooks";
 import MoneyCard from "../components/MoneyCard";
-import { useState } from "react";
 import ChangeAmoutModal from "../components/ChangeAmountModal";
 
 function AccountPage() {
@@ -21,12 +20,11 @@ function AccountPage() {
   const username = useStore((state) => state.username);
   const totalAmount = useStore((state) => state.totalAmount);
   const [opened, { open, close }] = useDisclosure(false);
-  const [value, setValue] = useState<string[]>([]);
 
   return (
     <div className={classes.page}>
       <ChangeAmoutModal opened={opened} close={close} />
-      <Flex align="center" direction="row" justify="space-between">
+      <Flex align="center" direction="row" justify="space-between" mb="md">
         <Title order={3} weight={500}>
           Witaj, {username}!
         </Title>

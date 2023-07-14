@@ -1,6 +1,7 @@
 import { Checkbox, Modal, Flex, Button, TextInput } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
-import React, { useState } from "react";
+import { useState } from "react";
+import useStore from "../states/user";
+import { useInputState } from "@mantine/hooks";
 
 function ChangeAmoutModal({
   opened,
@@ -9,7 +10,19 @@ function ChangeAmoutModal({
   opened: boolean;
   close: () => void;
 }) {
+  const [newAmountValue, setNewAmountValue] = useInputState(0);
   const [value, setValue] = useState<string[]>([]);
+  const totalAmount = useStore((state) => state.totalAmount);
+  const { increase, subtract } = useStore();
+  const updateTotalAmount = () => {
+    if (value[0] === "add") {
+      increase(newAmountValue);
+      close();
+    } else {
+      subtract(newAmountValue);
+      close();
+    }
+  };
   return (
     <Modal
       opened={opened}
@@ -36,8 +49,9 @@ function ChangeAmoutModal({
       <TextInput
         mt="lg"
         label="Podaj kwotę"
-        placeholder="100"
+        placeholder="500"
         size="sm"
+        onChange={(event) => setNewAmountValue(Number(event.currentTarget.value))}
         withAsterisk
       />
       <Button
@@ -48,6 +62,7 @@ function ChangeAmoutModal({
         gradient={{ from: "teal", to: "lime", deg: 105 }}
         radius="xl"
         type="submit"
+        onClick={updateTotalAmount}
       >
         Dodaj
       </Button>

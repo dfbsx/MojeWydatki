@@ -4,7 +4,7 @@ import React from 'react'
 function MoneyCard({sum}: {sum:number}) {
     
   return (
-    <Card shadow="sm" padding="xl" radius="md" withBorder>
+    <Card shadow="sm"  radius="md" withBorder pr="xl" pl="xl">
         <Title order={6} weight={200} mb="md">Dostępne środki</Title>
         <Text mt="s" fz="xl" weight={600}>{sum} zł</Text>
       </Card>)
