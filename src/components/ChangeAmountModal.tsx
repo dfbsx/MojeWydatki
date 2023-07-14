@@ -13,12 +13,12 @@ function ChangeAmoutModal({
   const [newAmountValue, setNewAmountValue] = useInputState(0);
   const [value, setValue] = useState<string[]>([]);
   const totalAmount = useStore((state) => state.totalAmount);
-  const { increase, subtract } = useStore();
+  const { increase, subtract, setTotalAmount } = useStore();
   const [data, setData] = useState({});
-  const [newAmountObject,setNewAmountObject] = useState({
-    title:"",
-    date:"",
-    amount:"",
+  const [newAmountObject, setNewAmountObject] = useState({
+    title: "",
+    date: "",
+    amount: "",
   });
   const updateTotalAmount = () => {
     if (value[0] === "add") {
@@ -28,8 +28,18 @@ function ChangeAmoutModal({
     }
     close();
   };
-  
 
+  useEffect(() => {
+    const storedData = JSON.parse(localStorage.getItem("mojeWydatki") || "{}");
+    if (totalAmount === 0) {
+      setTotalAmount(storedData.totalAmount);
+    }
+    console.log("obecna suma", totalAmount);
+    if (totalAmount !== 0) {
+      storedData.totalAmount = totalAmount;
+      localStorage.setItem("mojeWydatki", JSON.stringify(storedData));
+    }
+  }, [totalAmount]);
 
   return (
     <Modal
@@ -66,7 +76,9 @@ function ChangeAmoutModal({
         label="Podaj kwotę"
         placeholder="500"
         size="sm"
-        onChange={(event) => setNewAmountValue(Number(event.currentTarget.value))}
+        onChange={(event) =>
+          setNewAmountValue(Number(event.currentTarget.value))
+        }
         withAsterisk
       />
       <Button
