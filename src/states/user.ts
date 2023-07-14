@@ -2,8 +2,8 @@ import create from "zustand";
 
 interface User {
   username: string;
-  setUsername: (username: string) => void;
   totalAmount: number;
+  setUsername: (username: string) => void;
   setTotalAmount: (totalAmount: number) => void;
   increase: (by: number) => void;
   subtract: (by: number) => void;
@@ -11,21 +11,21 @@ interface User {
 
 const useStore = create<User>((set) => ({
   username: "",
+  totalAmount: 0,
   setUsername: (username) =>
     set((state) => ({
       ...state,
       username,
     })),
-
-  totalAmount: 0,
   setTotalAmount: (totalAmount) =>
     set((state) => ({
       ...state,
       totalAmount,
     })),
-
-  increase: (by) => set((state) => ({ ...state, totalAmount: state.totalAmount + Number(by) })),
-  subtract: (by) => set((state) => ({ ...state, totalAmount: state.totalAmount - by })),
+  increase: (by) =>
+    set((state) => ({ ...state, totalAmount: state.totalAmount + Number(by) })),
+  subtract: (by) =>
+    set((state) => ({ ...state, totalAmount: state.totalAmount - by })),
 }));
 
 export default useStore;

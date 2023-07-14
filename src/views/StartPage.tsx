@@ -13,6 +13,7 @@ import useStore from "../states/user";
 import { IconAlertCircle } from "@tabler/icons-react";
 import { useForm } from "@mantine/form";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export default function StartPage() {
   const useStyles = createStyles((theme) => ({
@@ -85,7 +86,7 @@ export default function StartPage() {
             mt="md"
             size="md"
           />
-          {form.values.username !== "" && form.values.totalAmount !==  "" ? (
+          {form.values.username !== "" && form.values.totalAmount !== "" ? (
             <Button
               fullWidth
               mt="xl"
