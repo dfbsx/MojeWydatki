@@ -1,7 +1,16 @@
-import { AppShell, Badge, Button, Card, Divider, Flex, Group, Modal, Title, createStyles, rem, Text, Image } from "@mantine/core";
+import {
+  Button,
+  Flex,
+  Title,
+  createStyles,
+  rem,
+} from "@mantine/core";
 import useStore from "../states/user";
 import { useDisclosure } from "@mantine/hooks";
 import MoneyCard from "../components/MoneyCard";
+import { useState } from "react";
+import ChangeAmoutModal from "../components/ChangeAmountModal";
+
 function AccountPage() {
   const useStyles = createStyles((theme) => ({
     page: {
@@ -11,25 +20,24 @@ function AccountPage() {
   const { classes } = useStyles();
   const username = useStore((state) => state.username);
   const totalAmount = useStore((state) => state.totalAmount);
-  const [wplyw, { open, close }] = useDisclosure(false);
-  
+  const [opened, { open, close }] = useDisclosure(false);
+  const [value, setValue] = useState<string[]>([]);
+
   return (
     <div className={classes.page}>
-    <Modal opened={wplyw} onClose={close} title="Dodaj nowy wpływ/wydatek">
-  </Modal>
-      <Flex  align="center"
-      direction="row"
-      justify="space-between">
-      <Title order={3} weight={500}>
-        Witaj, {username}!
-      </Title>
-      <Button variant="light" color="blue" radius="xl" onClick={open}>Dodaj nowy wpływ/wydatek</Button>
+      <ChangeAmoutModal opened={opened} close={close} />
+      <Flex align="center" direction="row" justify="space-between">
+        <Title order={3} weight={500}>
+          Witaj, {username}!
+        </Title>
+        <Button variant="light" color="blue" radius="xl" onClick={open}>
+          Dodaj nowy wpływ/wydatek
+        </Button>
       </Flex>
       <Flex justify="space-evenly" mt="xl">
-      <MoneyCard sum={totalAmount}></MoneyCard>
-      
+        <MoneyCard sum={totalAmount}></MoneyCard>
       </Flex>
-            </div>
+    </div>
   );
 }
 
