@@ -10,11 +10,17 @@ import {
 } from "@mantine/core";
 import ColorThemeButton from "./components/ColorThemeButton";
 import { useColorScheme, useHotkeys } from "@mantine/hooks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IconPigMoney } from "@tabler/icons-react";
 import styled, { keyframes } from "styled-components";
 import StartPage from "./views/StartPage";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter,
+  Route,
+  Routes,
+  redirect,
+  useNavigate,
+} from "react-router-dom";
 import AccountPage from "./views/AccountPage";
 
 const pulseAnimation = keyframes`

@@ -13,7 +13,7 @@ import useStore from "../states/user";
 import { IconAlertCircle } from "@tabler/icons-react";
 import { useForm } from "@mantine/form";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function StartPage() {
   const useStyles = createStyles((theme) => ({
@@ -53,6 +53,12 @@ export default function StartPage() {
   const { setUsername, setTotalAmount } = useStore();
   const form = useForm({ initialValues: { username: "", totalAmount: "" } });
   const navigate = useNavigate();
+  useEffect(() => {
+    const storedUser = localStorage.getItem("mojeWydatki");
+    if (storedUser) {
+      navigate("/home");
+    }
+  });
 
   return (
     <div className={classes.wrapper}>
