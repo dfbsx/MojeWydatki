@@ -33,12 +33,16 @@ function AccountPage() {
   useEffect(() => {
     const storedUser = localStorage.getItem("mojeWydatki");
     if (storedUser) {
-      setData(JSON.parse(storedUser));
+      const parsedUser = JSON.parse(storedUser);
+      const updatedUser = { ...newUser, ...parsedUser };
+      setData(updatedUser);
+      localStorage.setItem("mojeWydatki", JSON.stringify(updatedUser));
     } else {
       localStorage.setItem("mojeWydatki", JSON.stringify(newUser));
       setData(newUser);
     }
-  },[totalAmount]);
+  }, [newUser, totalAmount]);
+
   const [opened, { open, close }] = useDisclosure(false);
 
   return (

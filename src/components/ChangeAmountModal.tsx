@@ -34,7 +34,6 @@ function ChangeAmoutModal({
     if (totalAmount === 0) {
       setTotalAmount(storedData.totalAmount);
     }
-    console.log("obecna suma", totalAmount);
     if (totalAmount !== 0) {
       storedData.totalAmount = totalAmount;
       localStorage.setItem("mojeWydatki", JSON.stringify(storedData));
