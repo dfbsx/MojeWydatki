@@ -18,18 +18,20 @@ function ChangeAmoutModal({
   const [newAmountObject, setNewAmountObject] = useState({
     title: "",
     date: "",
-    amount: "",
+    amount: 0,
   });
   const updateTotalAmount = () => {
     if (value[0] === "add") {
-      increase(newAmountValue);
+      increase(newAmountObject.amount);
     } else {
-      subtract(newAmountValue);
+      subtract(newAmountObject.amount);
     }
+    setNewAmountObject({...newAmountObject, date: new Date().toLocaleDateString('pl-PL')})
     close();
   };
 
   useEffect(() => {
+    console.log(newAmountObject)
     const storedData = JSON.parse(localStorage.getItem("mojeWydatki") || "{}");
     if (totalAmount === 0) {
       setTotalAmount(storedData.totalAmount);
@@ -69,6 +71,9 @@ function ChangeAmoutModal({
         placeholder="Zakupy w Biedronce"
         size="sm"
         withAsterisk
+        onChange={(event) =>
+          setNewAmountObject({...newAmountObject , title: event.currentTarget.value})
+        }
       />
       <TextInput
         mt="lg"
@@ -76,7 +81,7 @@ function ChangeAmoutModal({
         placeholder="500"
         size="sm"
         onChange={(event) =>
-          setNewAmountValue(Number(event.currentTarget.value))
+          setNewAmountObject({...newAmountObject , amount: Number(event.currentTarget.value)})
         }
         withAsterisk
       />
