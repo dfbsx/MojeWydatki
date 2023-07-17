@@ -2,7 +2,6 @@ import {
   Paper,
   TextInput,
   Button,
-  ColorScheme,
   Title,
   createStyles,
   rem,
@@ -13,7 +12,7 @@ import useStore from "../states/user";
 import { IconAlertCircle } from "@tabler/icons-react";
 import { useForm } from "@mantine/form";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export default function StartPage() {
   const useStyles = createStyles((theme) => ({

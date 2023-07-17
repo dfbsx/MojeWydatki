@@ -1,7 +1,6 @@
 import { Checkbox, Modal, Flex, Button, TextInput } from "@mantine/core";
 import { useEffect, useState } from "react";
 import useStore from "../states/user";
-import { useInputState } from "@mantine/hooks";
 
 function ChangeAmoutModal({
   opened,
@@ -10,29 +9,57 @@ function ChangeAmoutModal({
   opened: boolean;
   close: () => void;
 }) {
-  const [newAmountValue, setNewAmountValue] = useInputState(0);
   const [value, setValue] = useState<string[]>([]);
   const totalAmount = useStore((state) => state.totalAmount);
   const { increase, subtract, setTotalAmount } = useStore();
-  const [data, setData] = useState({});
+  interface UserData {
+    username: string;
+    totalAmount: number;
+    allProceeds: any[];
+    allExpenses: any[];
+  }
+
+  const [data, setData] = useState<UserData>({
+    username: "",
+    totalAmount: 0,
+    allProceeds: [],
+    allExpenses: [],
+  });
+
   const [newAmountObject, setNewAmountObject] = useState({
     title: "",
     date: "",
     amount: 0,
   });
+
   const updateTotalAmount = () => {
     if (value[0] === "add") {
       increase(newAmountObject.amount);
+      const addedData = {
+        ...data,
+        allProceeds: [...data.allProceeds, newAmountObject],
+      };
+      setData(addedData);
+      localStorage.setItem("mojeWydatki", JSON.stringify(addedData));
     } else {
       subtract(newAmountObject.amount);
+      const updatedData = {
+        ...data,
+        allExpenses: [...data.allExpenses, newAmountObject],
+      };
+      setData(updatedData);
+      localStorage.setItem("mojeWydatki", JSON.stringify(updatedData));
     }
-    setNewAmountObject({...newAmountObject, date: new Date().toLocaleDateString('pl-PL')})
+    setNewAmountObject({
+      ...newAmountObject,
+      date: new Date().toLocaleDateString("pl-PL"),
+    });
     close();
   };
 
   useEffect(() => {
-    console.log(newAmountObject)
     const storedData = JSON.parse(localStorage.getItem("mojeWydatki") || "{}");
+    setData(storedData);
     if (totalAmount === 0) {
       setTotalAmount(storedData.totalAmount);
     }
@@ -72,7 +99,10 @@ function ChangeAmoutModal({
         size="sm"
         withAsterisk
         onChange={(event) =>
-          setNewAmountObject({...newAmountObject , title: event.currentTarget.value})
+          setNewAmountObject({
+            ...newAmountObject,
+            title: event.currentTarget.value,
+          })
         }
       />
       <TextInput
@@ -81,7 +111,10 @@ function ChangeAmoutModal({
         placeholder="500"
         size="sm"
         onChange={(event) =>
-          setNewAmountObject({...newAmountObject , amount: Number(event.currentTarget.value)})
+          setNewAmountObject({
+            ...newAmountObject,
+            amount: Number(event.currentTarget.value),
+          })
         }
         withAsterisk
       />
