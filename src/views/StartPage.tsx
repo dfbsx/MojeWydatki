@@ -50,7 +50,11 @@ export default function StartPage() {
 
   const { classes } = useStyles();
   const { setUsername, setTotalAmount } = useStore();
-  const form = useForm({ initialValues: { username: "", totalAmount: "" } });
+  type StartForm = {
+    username: string;
+    totalAmount: number;
+  };
+  const form = useForm<StartForm>();
   const navigate = useNavigate();
   useEffect(() => {
     const storedUser = localStorage.getItem("mojeWydatki");
@@ -72,10 +76,10 @@ export default function StartPage() {
           Zacznij śledzić swój stan konta!
         </Title>
         <form
-          onSubmit={form.onSubmit(() => {
+          onSubmit={form.onSubmit(({username, totalAmount}) => {
             navigate("/home");
-            setUsername(form.values.username);
-            setTotalAmount(parseInt(form.values.totalAmount));
+            setUsername(username);
+            setTotalAmount(totalAmount);
           })}
         >
           <TextInput
@@ -91,7 +95,7 @@ export default function StartPage() {
             mt="md"
             size="md"
           />
-          {form.values.username !== "" && form.values.totalAmount !== "" ? (
+          {form.values.username !== "" && form.values.totalAmount !== undefined ? (
             <Button
               fullWidth
               mt="xl"
