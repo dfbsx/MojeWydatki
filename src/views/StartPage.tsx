@@ -7,10 +7,11 @@ import {
   rem,
   Text,
   Alert,
+  NumberInput,
 } from "@mantine/core";
 import useStore from "../states/user";
 import { IconAlertCircle } from "@tabler/icons-react";
-import { useForm } from "@mantine/form";
+import { isInRange, isNotEmpty, useForm } from "@mantine/form";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
@@ -54,7 +55,12 @@ export default function StartPage() {
     username: string;
     totalAmount: number;
   };
-  const form = useForm<StartForm>();
+  const form = useForm<StartForm>({
+    validate: {
+      username: isNotEmpty('Musisz podać imię'),
+      totalAmount: isInRange({ min: 0 }, 'Kwota musi być liczbą większą od 0'),
+    },
+  });
   const navigate = useNavigate();
   useEffect(() => {
     const storedUser = localStorage.getItem("mojeWydatki");
@@ -88,7 +94,7 @@ export default function StartPage() {
             size="md"
             {...form.getInputProps("username")}
           />
-          <TextInput
+          <NumberInput
             label="Od jakiej kwoty zaczynamy śledzenie?"
             placeholder="500"
             {...form.getInputProps("totalAmount")}
@@ -104,6 +110,7 @@ export default function StartPage() {
               gradient={{ from: "teal", to: "lime", deg: 105 }}
               radius="xl"
               type="submit"
+              onClick={()=>console.log(typeof(form.values.totalAmount))}
             >
               Zaczynamy
             </Button>
