@@ -57,10 +57,19 @@ export default function StartPage() {
   };
   const form = useForm<StartForm>({
     validate: {
-      username: isNotEmpty('Musisz podać imię'),
-      totalAmount: isInRange({ min: 0 }, 'Kwota musi być liczbą większą od 0'),
+      username: isNotEmpty("Musisz podać imię"),
+      totalAmount: isInRange({ min: 0 }, "Kwota musi być liczbą większą od 0"),
     },
   });
+
+  const handleLogin = ({ username, totalAmount }: StartForm) => {
+    navigate("/home");
+    console.log("username", username);
+    console.log("ta", totalAmount);
+    setUsername(username);
+    setTotalAmount(totalAmount);
+  };
+
   const navigate = useNavigate();
   useEffect(() => {
     const storedUser = localStorage.getItem("mojeWydatki");
@@ -82,11 +91,9 @@ export default function StartPage() {
           Zacznij śledzić swój stan konta!
         </Title>
         <form
-          onSubmit={form.onSubmit(({username, totalAmount}) => {
-            navigate("/home");
-            setUsername(username);
-            setTotalAmount(totalAmount);
-          })}
+          onSubmit={() => {
+            handleLogin(form.values);
+          }}
         >
           <TextInput
             label="Jak masz na imię?"
@@ -101,7 +108,8 @@ export default function StartPage() {
             mt="md"
             size="md"
           />
-          {form.values.username !== "" && form.values.totalAmount !== undefined ? (
+          {form.values.username !== "" &&
+          form.values.totalAmount !== undefined ? (
             <Button
               fullWidth
               mt="xl"
@@ -110,7 +118,6 @@ export default function StartPage() {
               gradient={{ from: "teal", to: "lime", deg: 105 }}
               radius="xl"
               type="submit"
-              onClick={()=>console.log(typeof(form.values.totalAmount))}
             >
               Zaczynamy
             </Button>
