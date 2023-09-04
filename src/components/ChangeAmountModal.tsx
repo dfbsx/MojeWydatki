@@ -1,8 +1,7 @@
 import { Checkbox, Modal, Flex, Button, TextInput, NumberInput } from "@mantine/core";
 import { useEffect, useState } from "react";
 import useStore from "../states/user";
-import { isInRange, isNotEmpty, matches, useForm } from "@mantine/form";
-import { title } from "process";
+import { isInRange, isNotEmpty, useForm } from "@mantine/form";
 
 function ChangeAmoutModal({
   opened,
@@ -46,9 +45,13 @@ function ChangeAmoutModal({
     allExpenses: [],
   });
 
-  
-
   const updateTotalAmount = (values: any) => {
+    setNewAmountObject({
+      title: values.title,
+      amount: values.amount,
+      date: new Date().toLocaleDateString("pl-PL"),
+    });
+    console.log("obiekt teraz", newAmountObject)
     if (value[0] === "add") {
       increase(newAmountObject.amount);
       const addedData = {
@@ -66,12 +69,6 @@ function ChangeAmoutModal({
       setData(updatedData);
       localStorage.setItem("mojeWydatki", JSON.stringify(updatedData));
     }
-    setNewAmountObject({
-      ...newAmountObject,
-      title: values.title,
-      amount: values.amount,
-      date: new Date().toLocaleDateString("pl-PL"),
-    });
     setValue([]);
     close();
   };
