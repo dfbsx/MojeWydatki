@@ -26,7 +26,6 @@ function ChangeAmoutModal({
   });
 
   useEffect(() => {
-    console.log("obiekt",newAmountObject)
     const storedData = JSON.parse(localStorage.getItem("mojeWydatki") || "{}");
     setData(storedData);
     if (totalAmount === 0) {
@@ -36,7 +35,7 @@ function ChangeAmoutModal({
       storedData.totalAmount = totalAmount;
       localStorage.setItem("mojeWydatki", JSON.stringify(storedData));
     }
-  }, [totalAmount,newAmountObject]);
+  }, [totalAmount]);
 
   const [data, setData] = useState<UserData>({
     username: "",
@@ -45,13 +44,15 @@ function ChangeAmoutModal({
     allExpenses: [],
   });
 
-  const updateTotalAmount = (values: any) => {
+  const updateObject=(values:any)=>{
     setNewAmountObject({
       title: values.title,
       amount: values.amount,
       date: new Date().toLocaleDateString("pl-PL"),
     });
-    console.log("obiekt teraz", newAmountObject)
+  }
+
+  const updateTotalAmount = () => {
     if (value[0] === "add") {
       increase(newAmountObject.amount);
       const addedData = {
@@ -115,7 +116,7 @@ function ChangeAmoutModal({
           />
         </Flex>
       </Checkbox.Group>
-      <form onSubmit={() => updateTotalAmount(form.values)}>
+      <form onSubmit={updateTotalAmount}>
         <TextInput
           mt="lg"
           label="Podaj nazwę"
@@ -139,6 +140,7 @@ function ChangeAmoutModal({
           variant="gradient"
           gradient={{ from: "teal", to: "lime", deg: 105 }}
           radius="xl"
+          onClick={()=>updateObject(form.values)}
           type="submit"
         >
           Dodaj
