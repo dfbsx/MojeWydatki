@@ -54,12 +54,14 @@ function ChangeAmoutModal({
       ...newAmountObject,
       date: new Date().toLocaleDateString("pl-PL"),
     });
+    setValue([]);
     close();
   };
 
   useEffect(() => {
     const storedData = JSON.parse(localStorage.getItem("mojeWydatki") || "{}");
     setData(storedData);
+    console.log("checkbox",value)
     if (totalAmount === 0) {
       setTotalAmount(storedData.totalAmount);
     }
@@ -67,7 +69,7 @@ function ChangeAmoutModal({
       storedData.totalAmount = totalAmount;
       localStorage.setItem("mojeWydatki", JSON.stringify(storedData));
     }
-  }, [totalAmount]);
+  }, [totalAmount,value]);
 
   return (
     <Modal
@@ -83,12 +85,13 @@ function ChangeAmoutModal({
         withAsterisk
       >
         <Flex align="center" direction="row" justify="space-evenly" mt="md">
-          <Checkbox value="add" label="Nowy wpływ" radius="lg" size="md" />
+          <Checkbox value="add" label="Nowy wpływ" radius="lg" size="md" disabled={value.length !== 0 && value[0] !== "add" ? true : undefined} />
           <Checkbox
             value="subtract"
             label="Nowy wydatek"
             radius="lg"
             size="md"
+            disabled={value.length !== 0 && value[0] !== "subtract"? true : undefined}
           />
         </Flex>
       </Checkbox.Group>
