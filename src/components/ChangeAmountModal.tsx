@@ -1,6 +1,8 @@
-import { Checkbox, Modal, Flex, Button, TextInput } from "@mantine/core";
+import { Checkbox, Modal, Flex, Button, TextInput, NumberInput } from "@mantine/core";
 import { useEffect, useState } from "react";
 import useStore from "../states/user";
+import { isInRange, isNotEmpty, matches, useForm } from "@mantine/form";
+import { title } from "process";
 
 function ChangeAmoutModal({
   opened,
@@ -18,6 +20,24 @@ function ChangeAmoutModal({
     allProceeds: any[];
     allExpenses: any[];
   }
+  const [newAmountObject, setNewAmountObject] = useState({
+    title: "",
+    date: "",
+    amount: 0,
+  });
+
+  useEffect(() => {
+    console.log("obiekt",newAmountObject)
+    const storedData = JSON.parse(localStorage.getItem("mojeWydatki") || "{}");
+    setData(storedData);
+    if (totalAmount === 0) {
+      setTotalAmount(storedData.totalAmount);
+    }
+    if (totalAmount !== 0) {
+      storedData.totalAmount = totalAmount;
+      localStorage.setItem("mojeWydatki", JSON.stringify(storedData));
+    }
+  }, [totalAmount,newAmountObject]);
 
   const [data, setData] = useState<UserData>({
     username: "",
@@ -26,13 +46,9 @@ function ChangeAmoutModal({
     allExpenses: [],
   });
 
-  const [newAmountObject, setNewAmountObject] = useState({
-    title: "",
-    date: "",
-    amount: 0,
-  });
+  
 
-  const updateTotalAmount = () => {
+  const updateTotalAmount = (values: any) => {
     if (value[0] === "add") {
       increase(newAmountObject.amount);
       const addedData = {
@@ -52,24 +68,21 @@ function ChangeAmoutModal({
     }
     setNewAmountObject({
       ...newAmountObject,
+      title: values.title,
+      amount: values.amount,
       date: new Date().toLocaleDateString("pl-PL"),
     });
     setValue([]);
     close();
   };
 
-  useEffect(() => {
-    const storedData = JSON.parse(localStorage.getItem("mojeWydatki") || "{}");
-    setData(storedData);
-    console.log("checkbox",value)
-    if (totalAmount === 0) {
-      setTotalAmount(storedData.totalAmount);
-    }
-    if (totalAmount !== 0) {
-      storedData.totalAmount = totalAmount;
-      localStorage.setItem("mojeWydatki", JSON.stringify(storedData));
-    }
-  }, [totalAmount,value]);
+  const form = useForm({
+    validate: {
+      title: isNotEmpty("Podaj nazwę"),
+      amount: isInRange({ min: 1 }, 'Wartość musi wynosić więcej niż 1'),
+    },
+    validateInputOnChange: true,
+  });
 
   return (
     <Modal
@@ -85,54 +98,55 @@ function ChangeAmoutModal({
         withAsterisk
       >
         <Flex align="center" direction="row" justify="space-evenly" mt="md">
-          <Checkbox value="add" label="Nowy wpływ" radius="lg" size="md" disabled={value.length !== 0 && value[0] !== "add" ? true : undefined} />
+          <Checkbox
+            value="add"
+            label="Nowy wpływ"
+            radius="lg"
+            size="md"
+            disabled={
+              value.length !== 0 && value[0] !== "add" ? true : undefined
+            }
+          />
           <Checkbox
             value="subtract"
             label="Nowy wydatek"
             radius="lg"
             size="md"
-            disabled={value.length !== 0 && value[0] !== "subtract"? true : undefined}
+            disabled={
+              value.length !== 0 && value[0] !== "subtract" ? true : undefined
+            }
           />
         </Flex>
       </Checkbox.Group>
-      <TextInput
-        mt="lg"
-        label="Podaj nazwę"
-        placeholder="Zakupy w Biedronce"
-        size="sm"
-        withAsterisk
-        onChange={(event) =>
-          setNewAmountObject({
-            ...newAmountObject,
-            title: event.currentTarget.value,
-          })
-        }
-      />
-      <TextInput
-        mt="lg"
-        label="Podaj kwotę"
-        placeholder="500"
-        size="sm"
-        onChange={(event) =>
-          setNewAmountObject({
-            ...newAmountObject,
-            amount: Number(event.currentTarget.value),
-          })
-        }
-        withAsterisk
-      />
-      <Button
-        fullWidth
-        mt="xl"
-        size="md"
-        variant="gradient"
-        gradient={{ from: "teal", to: "lime", deg: 105 }}
-        radius="xl"
-        type="submit"
-        onClick={updateTotalAmount}
-      >
-        Dodaj
-      </Button>
+      <form onSubmit={() => updateTotalAmount(form.values)}>
+        <TextInput
+          mt="lg"
+          label="Podaj nazwę"
+          placeholder="Zakupy w Biedronce"
+          size="sm"
+          withAsterisk
+          {...form.getInputProps("title")}
+        />
+        <NumberInput
+          mt="lg"
+          label="Podaj kwotę"
+          placeholder="500"
+          size="sm"
+          withAsterisk
+          {...form.getInputProps("amount")}
+        />
+        <Button
+          fullWidth
+          mt="xl"
+          size="md"
+          variant="gradient"
+          gradient={{ from: "teal", to: "lime", deg: 105 }}
+          radius="xl"
+          type="submit"
+        >
+          Dodaj
+        </Button>
+      </form>
     </Modal>
   );
 }
