@@ -14,18 +14,16 @@ const useStore = create<User>((set) => ({
   totalAmount: 0,
   setUsername: (username) =>
     set((state) => ({
-      ...state,
       username,
     })),
   setTotalAmount: (totalAmount) =>
     set((state) => ({
-      ...state,
       totalAmount,
     })),
   increase: (by) =>
-    set((state) => ({ ...state, totalAmount: state.totalAmount + Number(by) })),
+    set((state) => ({ totalAmount: state.totalAmount + Number(by) })),
   subtract: (by) =>
-    set((state) => ({ ...state, totalAmount: state.totalAmount - by })),
+    set((state) => ({ totalAmount: state.totalAmount - by })),
 }));
 
 export default useStore;
