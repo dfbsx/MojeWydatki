@@ -69,22 +69,19 @@ function AccountPage() {
     allExpenses: [],
   });
 
-  const [proceedsSum, setProcedsSum] = useState(0);
-  const [expensesSum, setExpensesSum] = useState(0);
+  const proceedsSum = data?.allProceeds?.reduce(
+    (accumulator, item) => accumulator + item.amount,
+    0
+  )
+
+  const expensesSum = data?.allExpenses?.reduce(
+    (accumulator, item) => accumulator + item.amount,
+    0
+  )
+
   const [allHistory, setAllHistory] = useState<any[]>([]);
 
-  const countSum = () => {
-    const sump = data?.allProceeds?.reduce(
-      (accumulator, item) => accumulator + item.amount,
-      0
-    );
-    const sume = data?.allExpenses?.reduce(
-      (accumulator, item) => accumulator + item.amount,
-      0
-    );
-    setProcedsSum(sump);
-    setExpensesSum(sume);
-  };
+
 
   useEffect(() => {
     const storedUser = localStorage.getItem("mojeWydatki");
@@ -100,7 +97,6 @@ function AccountPage() {
   }, [newUser, totalAmount]);
 
   useEffect(() => {
-    countSum();
     setAllHistory(
       data?.allExpenses !== undefined && data?.allProceeds !== undefined
         ? [...data.allExpenses, ...data.allProceeds]
