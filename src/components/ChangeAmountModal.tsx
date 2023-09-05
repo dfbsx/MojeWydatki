@@ -1,4 +1,11 @@
-import { Checkbox, Modal, Flex, Button, TextInput, NumberInput } from "@mantine/core";
+import {
+  Checkbox,
+  Modal,
+  Flex,
+  Button,
+  TextInput,
+  NumberInput,
+} from "@mantine/core";
 import { useEffect, useState } from "react";
 import useStore from "../states/user";
 import { isInRange, isNotEmpty, useForm } from "@mantine/form";
@@ -44,13 +51,13 @@ function ChangeAmoutModal({
     allExpenses: [],
   });
 
-  const updateObject=(values:any)=>{
+  const updateObject = (values: any) => {
     setNewAmountObject({
       title: values.title,
       amount: values.amount,
       date: new Date().toLocaleDateString("pl-PL"),
     });
-  }
+  };
 
   const updateTotalAmount = () => {
     if (value[0] === "add") {
@@ -77,7 +84,7 @@ function ChangeAmoutModal({
   const form = useForm({
     validate: {
       title: isNotEmpty("Podaj nazwę"),
-      amount: isInRange({ min: 1 }, 'Wartość musi wynosić więcej niż 1'),
+      amount: isInRange({ min: 1 }, "Wartość musi wynosić więcej niż 1"),
     },
     validateInputOnChange: true,
   });
@@ -140,7 +147,7 @@ function ChangeAmoutModal({
           variant="gradient"
           gradient={{ from: "teal", to: "lime", deg: 105 }}
           radius="xl"
-          onClick={()=>updateObject(form.values)}
+          onClick={() => updateObject(form.values)}
           type="submit"
         >
           Dodaj

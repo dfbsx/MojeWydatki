@@ -15,40 +15,38 @@ import { isInRange, isNotEmpty, useForm } from "@mantine/form";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
+const useStyles = createStyles((theme) => ({
+  header: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: `${rem(8)} ${rem(12)}`,
+  },
+  wrapper: {
+    height: "calc(100vh - 60px)",
+    backgroundSize: "75% auto",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "right",
+    backgroundImage:
+      "url(https://images.unsplash.com/photo-1538356343135-65849f66b4a1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=873&q=80)",
+  },
+
+  form: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    height: "calc(100vh - 60px)",
+    borderRight: `${rem(1)} solid ${
+      theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.colors.gray[3]
+    }`,
+    maxWidth: rem(500),
+    [theme.fn.smallerThan("sm")]: {
+      maxWidth: "100%",
+    },
+  },
+}));
+
 export default function StartPage() {
-  const useStyles = createStyles((theme) => ({
-    header: {
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      padding: `${rem(8)} ${rem(12)}`,
-    },
-    wrapper: {
-      height: "calc(100vh - 60px)",
-      backgroundSize: "75% auto",
-      backgroundRepeat: "no-repeat",
-      backgroundPosition: "right",
-      backgroundImage:
-        "url(https://images.unsplash.com/photo-1538356343135-65849f66b4a1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=873&q=80)",
-    },
-
-    form: {
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-      height: "calc(100vh - 60px)",
-      borderRight: `${rem(1)} solid ${
-        theme.colorScheme === "dark"
-          ? theme.colors.dark[7]
-          : theme.colors.gray[3]
-      }`,
-      maxWidth: rem(500),
-      [theme.fn.smallerThan("sm")]: {
-        maxWidth: "100%",
-      },
-    },
-  }));
-
   const { classes } = useStyles();
   const { setUsername, setTotalAmount } = useStore();
   type StartForm = {

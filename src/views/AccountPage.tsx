@@ -13,43 +13,44 @@ import MoneyCard from "../components/MoneyCard";
 import ChangeAmoutModal from "../components/ChangeAmountModal";
 import { useEffect, useState } from "react";
 
+const useStyles = createStyles((theme) => ({
+  page: {
+    padding: `${rem(20)} ${rem(24)}`,
+  },
+  historyCard: {
+    display: "flex",
+    flexDirection: "row",
+    height: 1.5,
+    borderBottom: "1px lightGray solid",
+    alignItems: "center",
+  },
+  descCard: {
+    display: "flex",
+    flexDirection: "row",
+    height: 1.5,
+    borderBottom: "1px lightGray solid",
+    alignItems: "center",
+    padding: "2px",
+    backgroundColor: "#A5D8FF",
+    color: `{blue.3}`,
+  },
+  wide: {
+    flex: 1.3,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "left",
+    textAlign: "justify",
+  },
+  narrow: {
+    flex: 1,
+    display: "flex",
+    justifyContent: "left",
+    alignItems: "center",
+    textAlign: "justify",
+  },
+}));
+
 function AccountPage() {
-  const useStyles = createStyles((theme) => ({
-    page: {
-      padding: `${rem(20)} ${rem(24)}`,
-    },
-    historyCard: {
-      display: "flex",
-      flexDirection: "row",
-      height: 1.5,
-      borderBottom: "1px lightGray solid",
-      alignItems: "center",
-    },
-    descCard: {
-      display: "flex",
-      flexDirection: "row",
-      height: 1.5,
-      borderBottom: "1px lightGray solid",
-      alignItems: "center",
-      padding:"2px",
-      backgroundColor:"#A5D8FF",
-      color:`{blue.3}`,
-    },
-    wide: {
-      flex: 1.3,
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "left",
-      textAlign: "justify",
-    },
-    narrow: {
-      flex: 1,
-      display: "flex",
-      justifyContent: "left",
-      alignItems: "center",
-      textAlign: "justify",
-    },
-  }));
   const { classes } = useStyles();
   const username = useStore((state) => state.username);
   const totalAmount = useStore((state) => state.totalAmount);
@@ -72,16 +73,14 @@ function AccountPage() {
   const proceedsSum = data?.allProceeds?.reduce(
     (accumulator, item) => accumulator + item.amount,
     0
-  )
+  );
 
   const expensesSum = data?.allExpenses?.reduce(
     (accumulator, item) => accumulator + item.amount,
     0
-  )
+  );
 
   const [allHistory, setAllHistory] = useState<any[]>([]);
-
-
 
   useEffect(() => {
     const storedUser = localStorage.getItem("mojeWydatki");
