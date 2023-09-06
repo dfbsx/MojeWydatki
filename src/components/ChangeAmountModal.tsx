@@ -7,7 +7,7 @@ import {
   NumberInput,
 } from "@mantine/core";
 import { useEffect, useState } from "react";
-import useStore from "../states/user";
+import useStore, { useStoreActions } from "../states/user";
 import { isInRange, isNotEmpty, useForm } from "@mantine/form";
 
 function ChangeAmoutModal({
@@ -19,7 +19,7 @@ function ChangeAmoutModal({
 }) {
   const [value, setValue] = useState<string[]>([]);
   const totalAmount = useStore((state) => state.totalAmount);
-  const { increase, subtract, setTotalAmount } = useStore();
+  const { increase, subtract, setTotalAmount } = useStoreActions();
   interface UserData {
     username: string;
     totalAmount: number;

@@ -9,7 +9,7 @@ import {
   Alert,
   NumberInput,
 } from "@mantine/core";
-import useStore from "../states/user";
+import useStore, { useStoreActions } from "../states/user";
 import { IconAlertCircle } from "@tabler/icons-react";
 import { isInRange, isNotEmpty, useForm } from "@mantine/form";
 import { useNavigate } from "react-router-dom";
@@ -48,7 +48,7 @@ const useStyles = createStyles((theme) => ({
 
 export default function StartPage() {
   const { classes } = useStyles();
-  const { setUsername, setTotalAmount } = useStore();
+  const { setUsername, setTotalAmount } = useStoreActions();
   type StartForm = {
     username: string;
     totalAmount: number;
@@ -74,7 +74,7 @@ export default function StartPage() {
     if (storedUser) {
       navigate("/home");
     }
-  });
+  },[]);
 
   return (
     <div className={classes.wrapper}>
